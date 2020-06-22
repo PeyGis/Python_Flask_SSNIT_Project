@@ -1,0 +1,71 @@
+{% extends "pages/base_page.html" %}
+{% block body %}
+  <div class="well">
+        <div class="row">
+            <div class="col-md-4 col-sm-3 col-lg-3"><h3 style="color:#FF6A13; font-weight: bolder;" id="totalAmount">{{ data.total_trans.num }}</h3><p style="color:#888;" >Total request</p></div>
+            <div class="col-md-4 col-sm-3 col-lg-3"><h3 style="color:#FF6A13; font-weight: bolder;" id="successAmount">{{ data.successful.num }}</h3><p style="color:#888;" >Successful Requests</p></div>
+            <div class="col-md-4 col-sm-3 col-lg-3"><h3 style="color:#FF6A13; font-weight: bolder;" id="failedAmount">{{ data.fails.num }}</h3><p style="color:#888;" >Failed Requests</p></div>
+            <div class="col-md-4 col-sm-3 col-lg-3"><h3 style="color:#FF6A13; font-weight: bolder;"><a data-toggle="modal" href="#dashFilter">{{ lang.dash_analyse_label }}<span class="glyphicon glyphicon-filter" aria-hidden="true"> </span></a></h3><p style="color:#888;" >{{ lang.dash_analyse_Desc_label }}</p></div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- <div class="col-md-6">
+            <div id="chartdiv" style="width: 100%; height: 370px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="chartdiv2" style="width: 100%; height: 370px;"></div>
+        </div> -->
+        <div class="col-md-12">
+            <embed type="image/svg+xml" src={{bar_chart_full | safe}} style="width: 100%; height: 370px;"/>
+        </div>
+        <!-- <div class="col-md-6">
+            <embed type="image/svg+xml" src={{pie_chart_full | safe}} style="width: 100%; height: 370px;"/>
+        </div> -->
+        </div>
+    </div>
+
+
+            <!-- filter modal Start -->
+        <div align="center" class="modal fade" id="dashFilter" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">{{ lang.dash_analyse_label }}</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                <div class="" align="right" style="padding: 2%; padding-right: 25%">
+	                <div class="md-form" style="margin-bottom: 10px;">
+	                  <label for="date" class="" style="color:black; font-size:11px">{{ lang.start_date }}: </label>
+	                  <input type="date" id="dfromdate" class="form-control" placeholder="dd/mm/yyyy" style="width:200px; border-radius:25px">
+	                </div>
+	                <div class="md-form" style="margin-bottom: 10px;">
+	                  <label for="Email" class="" style="color:black; font-size:11px">{{ lang.end_date }}: </label>
+	                  <input type="date" id="dtodate" class="form-control" placeholder="dd/mm/yyyy" style="width:200px; border-radius:25px">
+	                </div>
+                </div>
+                <!--/.Panel 1 end-->
+                </div>
+                <div class="my-footer">
+                  <a style="padding-right: 10px" id="btnFilterDashboard" href>{{ lang.dash_analyse_bnt }}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                  <div class="loader_modal" style=""></div>
+                  <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topup modal End -->
+
+{% endblock %}
+
+{% block scriptbody %}
+	<script>
+    	$( document ).ready(function() {
+    		//getDashdata();
+	 	});
+    </script>
+{% endblock %}

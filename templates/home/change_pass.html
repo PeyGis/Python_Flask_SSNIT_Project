@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for( 'static', filename= 'imgs/SSNIT-Logo.png') }}">
+
+    <title>SSNIT</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for( 'static', filename= 'css/bootstrap.css') }}" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{{ url_for( 'static', filename= 'css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for( 'static', filename= 'css/cover.css') }}" rel="stylesheet">
+
+    <!-- Loading styles for this template -->
+    <link href="{{ url_for( 'static', filename= 'css/loading.css') }}" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="{{ url_for( 'static', filename= 'js/ie-emulation-modes-warning.js') }}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="home-bkg" >
+
+    <div class="site-wrapper">
+        <div class="cover-container" align="center">
+
+          <div style="margin-top:150px; margin-bottom:20px">
+            <!-- <a href="/"><img src="{{ url_for( 'static', filename= 'imgs/logo_2.png') }}" width="150px" height="50px" alt="sic_logo"></a> -->
+            <a href="/"><img src="{{ url_for( 'static', filename= 'imgs/SSNIT-Logo.png') }}" width="90px" height="90px" alt="sic_logo"></a>
+          </div>
+
+          <div style="margin-top:20px; margin-bottom:20px">
+            <p style="color: #333333; font-size: 12px;">Hi {{ userdata.first_name }} <br> First time login requires that you change your password.<br>
+            The password much be at least 8 characters long and contain a <br> Capital letter, small leter, numbers and symbols(@#$%*..)</p>
+          </div>
+
+          <div align="right" style="padding-right: 30%;">
+              <form  id=loginForm>
+
+                <!-- <div class="md-form">
+                    <label for="txtUsername" class="" style="color:black; font-size:11px">Username: </label>
+                    <input type="text" id="txtUsername" class="form-control" style="width:200px; border-radius:25px">
+                </div> -->
+
+                <div class="md-form" id="passwordForm" style="margin-top:20px;">
+                    <label for="txtOldPassword" class="" style="color:black; font-size:11px">Old Password: </label>
+                    <input type="password" id="txtOldPassword" class="form-control" style="width:200px; border-radius:25px">
+                </div>
+
+                <div class="md-form" id="passwordForm" style="margin-top:20px;">
+                    <label for="txtNewPassword" class="" style="color:black; font-size:11px">New Password: </label>
+                    <input type="password" id="txtNewPassword" class="form-control" style="width:200px; border-radius:25px">
+                </div>
+
+                <div class="md-form" id="passwordForm" style="margin-top:20px;">
+                    <label for="txtNewPasswordrep" class="" style="color:black; font-size:11px">Confirm Password: </label>
+                    <input type="password" id="txtNewPasswordrep" class="form-control" style="width:200px; border-radius:25px">
+                </div>
+
+                <!-- <div class="md-form" id="forgotPasswordlink" style="margin-top:10px;display:none;">
+                    <a style="font-size: 12px" id="btnForgetPassowrd" href>Forgot Your Password?</a>
+                </div> -->
+
+                <div class="md-form" style="margin-top: 10px; width: 350px;">
+                    <div class="loader"></div>
+                    <div class="msgAlertPlaceHolder"></div>
+                </div>
+
+                <div class="md-form" style="margin-top:20px;">
+
+                    <a href style="color: white; font-size: 16px; padding-left: 10px;" id="btnNewChangePass" href>Change Password<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                </div>
+
+              </form>
+          </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <!-- <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script> -->
+    <script src="{{ url_for( 'static', filename= 'js/jquery.min.js') }}"></script>
+    <script src="{{ url_for( 'static', filename= 'js/bootstrap.min.js') }}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{{ url_for( 'static', filename= 'js/ie10-viewport-bug-workaround.js') }}"></script>
+    <script src="{{ url_for( 'static', filename= 'js/app.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#txtUsername").focus();
+        });
+    </script>
+
+  </body>
+</html>

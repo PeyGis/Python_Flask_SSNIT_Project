@@ -1,0 +1,370 @@
+{% extends "pages/base_page.html" %}
+{% block body %}
+<div class="name2">
+<div class="row" style="width: 100%;">
+  <div class="col-sm-12">
+     <!-- <div class="loader" style="display: none;">
+          <div align="center" style="margin-bottom:15px;" class="">
+            <div class="-spinner-ring -error-"></div>
+            <h5><span class="msgAlertPlaceHolder"></span></h5>
+          </div>
+        </div> -->
+  </div>
+</div>
+</div>
+<div>
+  <div class="row" style="margin: 0px; padding-top: 0px;">
+      <div  class="col-sm-12">
+        <div class="col-sm-2"> <!-- required for floating -->
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs tabs-left">
+            <!-- <li class="active"><a href="#customersTab" data-toggle="tab">Serial No<u>s</u></a></li> -->
+            <li class="active"><a href="#bulkUploadTab" data-toggle="tab">Upload Serial No<u>s</u></a></li>
+            <li><a href="#serialVerificationTab" data-toggle="tab">Serial Verifications</a></li>
+            
+          </ul>
+        </div>
+
+        <div class="col-sm-10">
+          <!-- Tab panes -->
+          <div class="tab-content">
+
+            <!-- Begining of bulk Upload Tab -->
+            <div class="tab-pane active" id="bulkUploadTab">
+              <div class="row">
+                <div class="name2">
+                <div class="row" style="width: 100%;">
+                  <div class="col-sm-5">
+                      <div class="md-form pull-left">
+                      <a onclick="window.open('/static/uploads/sample.csv')" style="cursor: pointer;">Sample File <span class="glyphicon glyphicon-file" aria-hidden="true"> </span></a>
+                      <!-- <input type="text" placeholder="{{ lang.search_lable }}" class="form-control" style="width:250px; border-radius:25px; height: 30px; margin-left: 10px;">
+                      <a href="" title="Search uploads"><span class="glyphicon glyphicon-search" aria-hidden="true"> </span></a> -->
+                      </div>
+
+                  </div>
+                  <div class="col-sm-2">
+                        <div class="loader" style="display: none;">
+                          <div align="center" style="margin-bottom:15px;" class="">
+                            <div class="-spinner-ring -error-"></div>
+                            <h5><span class="msgAlertPlaceHolder"></span></h5>
+                          </div>
+                        </div>
+                  </div>
+                  <div class="col-sm-5">
+                      <span id="dt-next-prev" class="pull-right">
+                        Page <input type="text" min="0" style="margin-bottom:15px; width:30px;text-align:center;border-radius: 20px;" id="page_id_bu" class="page-number" name="page-number" placeholder="0" value="1" required=""> {{ lang.of_lable }}
+                      <span style="width:30px;text-align:center" id="total_pages">{{ up_data.pages or '1' }}</span><input type="hidden" id="uploads_total_pages" value="{{up_data.pages or '1'}}">
+
+                        <a onclick="bulkUploadsCurr()"><i class="fa fa-refresh fa-lg" title="Load Page" aria-hidden="true"></i></a>
+
+                        <a onclick="bulkUploadsPrev()"><i class="fa fa-chevron-circle-left fa-lg" title="Previous Page" aria-hidden="true"></i></a>
+                        
+                        <a onclick="bulkUploadsNext()"><i class="fa fa-chevron-circle-right fa-lg" title="Next Page" aria-hidden="true"></i></a>
+                        
+                      </span>
+                  </div>
+                </div>
+                </div>
+
+                <div>
+                <div class="table-responsive" style="overflow-x: inherit; cursor: pointer;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="table_headings">
+                                <th>FILE ID</th>
+                                <th>{{ lang.tbl_file_name_head }}</th>
+                                <th>{{ lang.tbl_app_status_head }}</th>
+                                <th>{{ lang.tbl_uploaded_by_head }}</th>
+                                <th>{{ lang.tbl_upload_date_head }}</th>
+                                <th>{{ lang.tbl_action_head }}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="uploadsTblBody">
+                          {% for upload in up_data['data'] %}
+                            <tr style="background-color: #FEF9F3">
+                                <td style="color: #FF6A13; font-weight: bolder">{{ upload['bulk_id'] }}</td>
+                                <td>{{ upload['filename'] }}</td>
+                                <td>{{ upload['approval_status'] }}</td>
+                                <td>{{ upload['uploaded_by'] }}</td>
+                                <td>{{ upload['upload_date'] }}</td>
+
+                                {% if 'P' in userdata['details'] %}
+                                  {% if upload['approval_status'] == 'Not Approved' and upload['processing_status'] == 'Not Processed' %}
+                                    <td style="color: #108E53;"><a onclick="approve_upload('{{ upload['bulk_id'] }}')">Approve</a> | <a onclick="decline_upload('{{ upload['bulk_id'] }}')">Decline</a> | <a onclick="window.open('/static/uploads/{{ upload['bulk_id'] }}.csv')">Download File</a></td>
+                                  {% elif upload['approval_status'] == 'Approved' %}
+                                    <td style="color: #108E53;"><a href="/vouchers/{{ upload['bulk_id'] }}">Details</a> | <a onclick="window.open('/static/uploads/{{ upload['bulk_id'] }}.csv')">Download File</a></td>
+                                  {% else %}
+                                    <td style="color: #108E53;"><a onclick="window.open('/static/uploads/{{ upload['bulk_id'] }}.csv')">Download File</a></td>
+                                  {% endif %}
+                                {% else %}
+                                  <td style="color: #108E53;">No Action</td>
+                                {% endif %}
+                            </tr>
+                          {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+                  
+                  {% if 'U' in userdata['details'] %}
+                      <div style="color: #888; cursor: pointer;" >
+                        <span style="padding-left: 43px" class="glyphicon glyphicon-plus-sign" aria-hidden="true"> </span>
+                        <span style="color: #888;" onclick="performClick('theFile');">{{ lang.upload_add_file_label }}</span>
+                        <span style="padding-left: 43px" class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"> </span>
+                        <span style="color: #888;" id="uploadBtn">{{ lang.upload_label }}</span>
+                        <!-- <span style="padding-left: 43px" class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                        <span style="color: #888;">Cancel Upload</span> -->
+                        <span style="padding-left: 43px" class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                        <span style="color: #888;" onclick="cancelUpload();">{{ lang.upload_cancel_label }}</span>
+                      </div>
+
+                    <div class="table-responsive" style="overflow-x: inherit; cursor: pointer; display: none; padding-left: 20%; padding-right: 20%;" id="uploadTbl">
+                      <table class="table table-hover">
+                          <tbody>
+                              <tr style="background-color: #FEF9F3">
+                                  <td style="color: #FF6A13; font-weight: bolder" id="tblfileName">{{ lang.tbl_file_name_head }}</td>
+                                  <td id="tblfileSize">{{ lang.tbl_size_head }}</td>
+                                  <td id="tblfileType">{{ lang.upload_file_type_label }}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                    </div>
+                {% endif %}
+              </div>
+            </div>
+            <!-- End of bulk Upload Tab -->
+
+            <!-- Start Verification list tab -->
+            <div class="tab-pane" id="serialVerificationTab">
+                    <div class="row">
+                    <div class="name2">
+                    <div class="row" style="width: 100%;">
+                        <div class="col-sm-5">
+                            <div class="md-form pull-left">
+                            <a data-toggle="modal" href="#serialVerificationFilter" title="Filter verifications">{{ lang.filter_lable }}<span class="glyphicon glyphicon-filter" aria-hidden="true"> </span></a>
+                            <input id="txtSearchSerials" type="text" placeholder="Search for Serials..." class="form-control" style="width:250px; border-radius:25px; height: 30px; margin-left: 10px;">
+                            <a href="" id="btnSerchSerialsVerify"><span class="glyphicon glyphicon-search" aria-hidden="true"> </span></a>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="loader" style="display: none;">
+                                <div align="center" style="margin-bottom:15px;" class="">
+                                <div class="-spinner-ring -error-"></div>
+                                <h5><span class="msgAlertPlaceHolder"></span></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <span id="dt-next-prev" class="pull-right" style="margin-bottom:15px;">
+                            Page <input type="text" min="0" style="width:30px;text-align:center;border-radius: 20px;" id="verify_page_id" class="page-number" name="page-number" placeholder="0" value="1" required=""> {{ lang.of_lable }}
+                            <span style="width:30px;text-align:center">{{ length or '1' }}</span> <input type="hidden" id="verify_total_pages" value="{{length or '1'}}">
+                            <a onclick="serialsVerifyCurr()"><i class="fa fa-refresh fa-lg" title="Load Page" aria-hidden="true"></i></a>
+                            <a onclick="serialsVerifyPrev()"><i class="fa fa-chevron-circle-left fa-lg" title="Previous Page" aria-hidden="true"></i></a>
+                            <a onclick="serialsVerifyNext()"><i class="fa fa-chevron-circle-right fa-lg" title="Next Page" aria-hidden="true"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div>
+                    <div class="table-responsive" style="overflow-x: inherit; cursor: pointer;">
+                        <table class="table table-hover">
+                        <thead>
+                            <tr class="table_headings">
+                                    <tr class="table_headings">
+                                        <th>User Phone</th>
+                                        <th>Serial Number</th>
+                                        <th>Status</th>
+                                        <th>User Network</th>
+                                        <th>Event Date</th>
+                                    </tr>
+                            </tr>
+                        </thead>
+                        <tbody id="serialVerifyTblBody">
+                                {% for item in history['history'] %}
+                                <tr style="background-color: #FEF9F3">
+                                    <td style="color: #FF6A13; font-weight: bolder">{{ item['user_msisdn'] }}</td>
+                                    <td>{{ item['serial_no'] }}</td>
+                                    <td>{{ item['status']|capitalize }}</td>
+                                     <td>{{ item['user_mno'] }}</td>  
+                                    <td>{{ item['date_created'] }}</td>                            
+                                </tr>
+                              {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+                <!--End verification pane content-->
+
+            </div>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+      </div>
+    </div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+    function performClick(elemId) {
+       var elem = document.getElementById(elemId);
+       if(elem && document.createEvent) {
+          var evt = document.createEvent("MouseEvents");
+          evt.initEvent("click", true, false);
+          elem.dispatchEvent(evt);
+       }
+    }
+
+</script>
+
+    <!-- <a href="#" onclick="performClick('theFile');">Open file dialog</a> -->
+    
+    <form id="form1" enctype="multipart/form-data" action="/vouchers/record" method="POST">
+      <input type="file" name="file" id="theFile" style="display: none;" />
+      <button id="theFileUploads" class="btn btn-blue" style="display: none;">upload</button>
+    </form>
+
+
+    <!-- filter modal Start -->
+        <div align="center" class="modal fade" id="serialVerificationFilter" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">{{ lang.filter_lable }}</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                <div class="" align="right" style="padding: 2%; padding-right: 25%">
+                        <div class="md-form" style="margin-bottom: 10px;">
+                            <label for="mfromdate" class="" style="color:black; font-size:11px">{{ lang.start_date }}: </label>
+                          <input type="text" id="mfromdate" class="form-control" placeholder="dd/mm/yyyy" style="width:200px; border-radius:25px">
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="mtodate" class="" style="color:black; font-size:11px">{{ lang.end_date }}: </label>
+                          <input type="text" id="mtodate" class="form-control" placeholder="dd/mm/yyyy" style="width:200px; border-radius:25px">
+                        </div>
+                        <div class="form-group" align="right">
+                        <label for="category" style="color:black; font-size:11px">Status: </label>
+                        <select class="form-control drp-select" id="mtxtStatus" style="width:200px; border-radius:25px">
+                            <option value="All">All</option>
+                            <option value="NON EXISTENT">Incorrect Serials</option>
+                            <option value="VALIDATED">Successful Verification</option>
+                            <option value="NOT VALIDATED">Unsuccessful Verification</option>
+                        </select>
+                        </div>
+                </div>
+                <!--/.Panel 1 end-->
+                </div>
+                <div class="my-footer">
+                  <a style="padding-right: 10px" id="btnFilterSerialVerification" href>Filter Now<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                  <div class="loader_modal" style=""></div>
+                  <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topup modal End -->
+    <!-- filter modal Start -->
+        <div align="center" class="modal fade" id="declineCustomersRequestModal" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">Confirm Decline</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                <div class="" align="left" style="padding: 10%;">
+                        <p style="color: #888; font-size: 18px;"> Are you sure you want to decline this request <span id="cusRequetsId3" style="display: none;"></span>? </p>
+                </div>
+                <!--/.Panel 1 end-->
+                </div>
+                <div class="my-footer">
+                  <a style="padding-right: 10px" id="btnDeclineCustomerRequest" href>Yes <span class="glyphicon glyphicon-ok" aria-hidden="true"> </span></a>
+                  <a style="padding-right: 10px" data-dismiss="modal" href>  No<span class="glyphicon glyphicon-remove" aria-hidden="true"> </span></a>
+                  <div class="loader_modal" style=""></div>
+                  <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topup modal End -->
+
+    <!-- filter modal Start -->
+        <div align="center" class="modal fade" id="approveFileModal" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">Confirm Approval</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                <div class="" align="left" style="padding: 10%;">
+                        <p style="color: #888; font-size: 18px;"> The serials provided in the file will be registered on the platform if approval is confirmed. <br> <br> Are you sure you want to approve processing of this file<span id="filebulkId0" style="display: none;"></span>? </p>
+                </div>
+                <!--/.Panel 1 end-->
+                </div>
+                <div class="my-footer">
+                  <a style="padding-right: 10px" id="btnApproveFileRequest" href>Yes <span class="glyphicon glyphicon-ok" aria-hidden="true"> </span></a>
+                  <a style="padding-right: 10px" data-dismiss="modal" href>  No<span class="glyphicon glyphicon-remove" aria-hidden="true"> </span></a>
+                  <div class="loader_modal" style=""></div>
+                  <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topup modal End -->
+
+    <!-- filter modal Start -->
+        <div align="center" class="modal fade" id="declineFileModal" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">Confirm Decline</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                <div class="" align="left" style="padding: 10%;">
+                        <p style="color: #888; font-size: 18px;"> Are you sure you want to decine processing of this file? <span id="filebulkId1" style="display: none;"></span>? </p>
+                </div>
+                <!--/.Panel 1 end-->
+                </div>
+                <div class="my-footer">
+                  <a style="padding-right: 10px" id="btnDeclineFileRequest" href>Yes <span class="glyphicon glyphicon-ok" aria-hidden="true"> </span></a>
+                  <a style="padding-right: 10px" data-dismiss="modal" href>  No<span class="glyphicon glyphicon-remove" aria-hidden="true"> </span></a>
+                  <div class="loader_modal" style=""></div>
+                  <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topup modal End -->
+
+    <div class="md-form" style="margin-bottom: 10px; display: none">
+      {% if 'I' in userdata['details'] %}
+        <input type="text" id="userAppoveRole" class="form-control" value="I" style="width:200px; border-radius:25px" disabled>
+      {% endif %}
+      {% if 'H' in userdata['details'] %}
+        <input type="text" id="userRequestRole" class="form-control" value="H" style="width:200px; border-radius:25px" disabled>
+      {% endif %}
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,776 @@
+{% extends "pages/base_page.html" %}
+{% block body %}
+<div class="name2">
+<div class="row" style="width: 100%;">
+  <div class="col-sm-12">
+     <div class="loader" style="display: none;">
+          <div align="center" style="margin-bottom:15px;" class="">
+            <div class="-spinner-ring -error-"></div>
+            <h5><span class="msgAlertPlaceHolder"></span></h5>
+          </div>
+        </div>
+  </div>
+</div>
+</div>
+
+<div>
+  <div class="row" style="margin: 0px; padding-top: 0px;">
+      <div  class="col-sm-12">
+        <div class="col-sm-2"> <!-- required for floating -->
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs tabs-left">
+            <li class="active"><a href="#generalTab" data-toggle="tab">Aministrators</a></li>
+            {% if 'G' in userdata['details'] %}
+              <li><a id="accountsTabNav" href="#accountsTab" data-toggle="tab">Groups</a></li>
+              {% endif %}
+              {% if 'B' in userdata['details'] %}
+               <li><a id="branchesTabNav" href="#branchesTab" data-toggle="tab">Branches</a></li>
+            {% endif %}
+            <!-- <li><a href="#settingTab" data-toggle="tab">Settings</a></li> -->
+            <!-- <li><a href="#transactionsTabs" data-toggle="tab">transactions</a></li>
+            <li><a href="#Userstab" data-toggle="tab">Users</a></li> -->
+          </ul>
+        </div>
+
+        <div class="col-sm-10">
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <!-- Start General tab -->
+            <div class="tab-pane active" id="generalTab">
+            <div class="row">
+                <div class="name2">
+                  <div class="row" style="width: 100%;">
+                    <div class="col-sm-6">
+                        <div class="md-form pull-left">
+                        <a data-toggle="modal" href="#adminsFilter">{{ lang.filter_lable }}<span class="glyphicon glyphicon-filter" aria-hidden="true"> </span></a>
+                        <input id="txtSearchad" type="text" placeholder="Search for ..." class="form-control" style="width:250px; border-radius:25px; height: 30px; margin-left: 10px;">
+                        <a id="btnSerchAdmins"><span class="glyphicon glyphicon-search" aria-hidden="true"> </span></a>
+                        </div>
+
+                    </div>
+                    <!-- <div class="col-sm-4">
+                          <div class="loader" style="display: none;">
+                            <div align="center" style="margin-bottom:15px;" class="">
+                              <div class="-spinner-ring -error-"></div>
+                              <h5><span class="msgAlertPlaceHolder"></span></h5>
+                            </div>
+                          </div>
+                    </div> -->
+                    <div class="col-sm-6">
+                        <span id="dt-next-prev" class="pull-right" style="margin-bottom:15px;">
+                          Page <input type="text" min="0" style="width:30px;text-align:center;border-radius: 20px;" id="page_id" class="page-number" name="page-number" placeholder="0" value="1" required="">{{ lang.of_lable }}
+                        <span style="width:30px;text-align:center" id="total_pages">1</span>
+
+                          <a onclick="filterAdmins()"><i class="fa fa-refresh fa-lg" title="Load Page" aria-hidden="true"></i></a>
+
+                          <a onclick="adminsPrev()"><i class="fa fa-chevron-circle-left fa-lg" aria-hidden="true"></i></a>
+                         
+                          <a onclick="adminsNext()"><i class="fa fa-chevron-circle-right fa-lg" aria-hidden="true"></i></a>
+                          
+                        </span>
+                    </div>
+                  </div>
+                  </div>
+
+                  <div>
+                  <div class="table-responsive" style="overflow-x: inherit; cursor: pointer;">
+                    <table class="table table-hover">
+                      <thead>
+                          <tr class="table_headings">
+                              <th>{{ lang.admin_tbl_username }}</th>
+                              <th>{{ lang.admin_tbl_fname }}</th>
+                              <th>{{ lang.admin_tbl_lname }}</th>
+                              <th>{{ lang.admin_tbl_email }}</th>
+                              <th>{{ lang.admin_tbl_msisdn }}</th>
+                              <th>Branch</th>
+                              <th>Group</th>
+                              <th>{{ lang.admin_tbl_status }}</th>
+                              <th>{{ lang.admin_tbl_cdate }}</th>
+                              <th>{{ lang.admin_tbl_acttion }}</th>
+                          </tr>
+                      </thead>
+                      <tbody id="adminsTblBody">
+                        {% for admin in data['data'] %}
+                              <tr style="background-color: #FEF9F3">
+                                  <td style="color: #FF6A13; font-weight: bolder">{{ admin['username'] }}</td>
+                                  <td>{{ admin['first_name'] }}</td>
+                                  <td>{{ admin['last_name'] }}</td>
+                                  <td>{{ admin['email'] }}</td>
+                                  <td>{{ admin['msisdn'] }}</td>
+                                  <td>{{ admin['branch_code'] }}</td>
+                                  <td>{{ admin['name'] }}</td>
+
+                                  {% if admin['active'] == 1 %}
+                                    <td><i class="fa fa-circle trans_success" aria-hidden="true"></i></td>
+                                  {% else %}
+                                    <td><i class="fa fa-circle trans_failed" aria-hidden="true"></i></td>
+                                  {% endif %}
+                                  <td>{{ admin['created'] }}</td>
+                                  <td style="color: #108E53;"><a onclick=get_admin_details("{{ admin['username'] }}")>{{ lang.tbl_bulk_details }}</a></td>
+                              </tr>
+                            {% endfor %}
+                      </tbody>
+                  </table>
+                  </div>
+                  </div>
+                  </div>
+
+                        <div style="color: #FF6A13;" >
+                          <a data-toggle="modal" href="#addadmin"><span style="padding-left: 43px" class="glyphicon glyphicon-plus-sign" aria-hidden="true"> </span> 
+                          <span style="color: #888;">{{ lang.admin_add_modal_label }}</span></a>
+                      </div>
+            </div>            
+            <!-- End of general tab -->
+
+
+
+
+              <!-- Start Branches tab -->
+            <div class="tab-pane" id="branchesTab">
+            <div class="row">
+                <div class="name2">
+                  <div class="row" style="width: 100%;">
+                    <div class="col-sm-6">
+                        <div class="md-form pull-left">
+                        <a data-toggle="modal" onclick="window.open('/admins/branches/export')" href="#" title="Export branches">{{ lang.bulk_opt_export }} <span class="glyphicon glyphicon-save" aria-hidden="true"> </span></a>
+                        <input id="txtSearchbc" type="text" placeholder="Search for ..." class="form-control" style="width:250px; border-radius:25px; height: 30px; margin-left: 10px;">
+                        <a id="btnSerchbranch" ><span title="Search" class="glyphicon glyphicon-search" aria-hidden="true"> </span></a>
+                        </div>
+
+                    </div>
+                    <!-- <div class="col-sm-4">
+                          <div class="loader" style="display: none;">
+                            <div align="center" style="margin-bottom:15px;" class="">
+                              <div class="-spinner-ring -error-"></div>
+                              <h5><span class="msgAlertPlaceHolder"></span></h5>
+                            </div>
+                          </div>
+                    </div> -->
+                    <div class="col-sm-6">
+                        <span id="dt-next-prev" class="pull-right" style="margin-bottom:15px;">
+                          Page <input type="text" min="0" style="width:30px;text-align:center;border-radius: 20px;" id="page_id_bc" class="page-number" name="page-number" placeholder="0" value="1" required="">{{ lang.of_lable }}
+                        <span style="width:30px;text-align:center" id="total_pages">1</span>
+
+                          <a onclick="branchesCurr()" title="Get/Reload Page"><i class="fa fa-refresh fa-lg" title="Load Page" aria-hidden="true"></i></a>
+
+                          <a onclick="branchesPrev()" title="Previous Page"><i class="fa fa-chevron-circle-left fa-lg" aria-hidden="true"></i></a>
+                         
+                          <a onclick="branchesNext()" title="Next Page"><i class="fa fa-chevron-circle-right fa-lg" aria-hidden="true"></i></a>
+                          
+                        </span>
+                    </div>
+                  </div>
+                  </div>
+
+                  <div>
+                  <div class="table-responsive" style="overflow-x: inherit; cursor: pointer;">
+                    <table class="table table-hover">
+                      <thead>
+                          <tr class="table_headings">
+                             
+                              <th>BRANCH SHORT NAME</th>
+                              <th>BRANCH NAME</th>
+                              <th>BRANCH CODE</th>
+                              <!--<th>{{ lang.admin_tbl_acttion }}</th>-->
+                          </tr>
+                      </thead>
+                      <tbody id="branchesTblBody">
+                        {% for branch in data['branches'] %}
+                          {% if branch['branch_code'] == userdata["branch_code"] %}
+                            <option value="{{ branch['branch_code'] }}">{{ branch['branch_name'] }}</option>
+                          {% endif %}
+                          <tr style="background-color: #FEF9F3">
+                                  <td style="color: #FF6A13; font-weight: bolder">{{ branch['acronym'] }}</td>
+                                  <td>{{ branch['branch_name'] }}</td>
+                                  <td>{{ branch['branch_code'] }}</td>
+                                  <!--<td style="color: #108E53;"><a onclick=remove_branch("{{ branch['branch_id'] }}")>Delete</a></td>-->
+                              </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+                  </div>
+                  </div>
+                  </div>
+
+                        <div style="color: #026134;" >
+                          <a data-toggle="modal" href="#addbranch"><span style="padding-left: 43px" class="glyphicon glyphicon-plus-sign" aria-hidden="true"> </span> 
+                          <span style="color: #888;">{{ lang.branch_add_modal_label }}</span></a>
+                      </div>
+            </div>            
+            <!-- End of branches tab -->
+
+
+            <!-- Begining of Setting Tab -->
+            <div class="tab-pane" id="settingTab">
+              <div class="row">
+                <div class="col-sm-6" >
+                  <div class="" align="right" style="padding: 2%; padding-right: 2%">
+                    <p>Settings</p>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="" align="left" style="padding: 2%; padding-left: 20%">
+                    <p>Settings</p>
+                  </div>
+                </div>
+            </div>
+            <!-- End of Setting Tab -->
+            </div>
+
+            <!-- Begining of Group Tab -->
+            <div class="tab-pane" id="accountsTab">
+
+            <div class="row">
+              <div class="table-responsive" style="overflow-x: inherit; cursor: pointer;">
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table_headings">
+                            <th>Group Name</th>
+                            <th>Description</th>
+                            <th>{{ lang.tbl_action_head }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountMapsTbl">
+                      {% for group in data['admin_group'] %}
+                          <tr style="background-color: #FEF9F3">
+                              <td style="color: #FF6A13; font-weight: bolder">{{ group['name'] }}</td>
+                              <td>{{ group['description'] }}</td>
+                              <td style="color: #108E53;"><a onclick=get_role_details("#group_{{ group['id'] }}")>Details</a></td>
+                              <td style="display: none;" id="group_{{ group['id'] }}">{{ group['name'] | safe }}|{{ group['description'] | safe }}|{{ group['details'] | safe }}|{{ group['id'] }}</td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="color: #FF6A13;" >
+                <a data-toggle="modal" href="#addgroup"><span style="padding-left: 43px" class="glyphicon glyphicon-plus-sign" aria-hidden="true"> </span> 
+                <span style="color: #888;">Add Group</span></a>
+            </div>
+
+            </div>
+            <div class="tab-pane" id="transactionsTabs">Transactions Tab.</div>
+            <div class="tab-pane" id="Userstab">users Tab.</div>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+      </div>
+    </div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+    function performClick(elemId) {
+       var elem = document.getElementById(elemId);
+       if(elem && document.createEvent) {
+          var evt = document.createEvent("MouseEvents");
+          evt.initEvent("click", true, false);
+          elem.dispatchEvent(evt);
+       }
+    }
+
+</script>
+    <!-- <a href="#" onclick="performClick('theFile');">Open file dialog</a> -->
+    
+    <form id="form1" enctype="multipart/form-data" action="/bulkpay/record" method="POST">
+      <input type="file" name="file" id="theFile" style="display: none;" />
+      <button id="theFileUploads" class="btn btn-blue" style="display: none;">upload</button>
+    </form>
+
+<!-- Add Admin modal Start -->
+        <div align="center" class="modal fade" id="addadmin" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">{{ lang.admin_add_modal_title }}</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                        <div class="" align="right" style="padding: 2%; padding-right: 25%">
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtFirstnameAdmin" class="" style="color:black; font-size:11px">{{ lang.firstname_label }}: </label>
+                                  <input type="text" id="txtFirstnameAdmin" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtLastnameAdmin" class="" style="color:black; font-size:11px">{{ lang.lastname_label }}: </label>
+                                  <input type="text" id="txtLastnameAdmin" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtUsernameAdmin" class="" style="color:black; font-size:11px">{{ lang.username_label }}: </label>
+                                  <input type="text" id="txtUsernameAdmin" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtPhoneAdmin" class="" style="color:black; font-size:11px">{{ lang.msisdn_label }}: </label>
+                                  <input type="text" id="txtPhoneAdmin" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtEmailAdmin" class="" style="color:black; font-size:11px">{{ lang.email_label }}: </label>
+                                  <input type="text" id="txtEmailAdmin" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                                
+                                <div class="form-group" align="right">
+                                  <label for="txtUserType" class="" style="color:black; font-size:11px">Group: </label>
+                                  <select class="form-control drp-select" id="txtGroupAdmin" style="width:200px; border-radius:25px">
+                                    {% for group in data['admin_group'] %}
+                                      <option value="{{ group['id'] }}">{{ group['name'] }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                  <div class="form-group" align="right">
+                                  <label for="txtInstitutionAdmin" class="" style="color:black; font-size:11px">Branch: </label>
+                                    <select class="form-control drp-select" id="txtBranchAdmin" style="width:200px; border-radius:25px">
+                                      {% if userdata["branch_code"] == 'All' %}
+                                      {% for branch in data['branches'] %}
+                                        <option value="{{ branch['branch_code'] }}">{{ branch['branch_name'] }}</option>
+                                      {% endfor %}
+                                    {% else %}
+                                      {% for branch in data['branches'] %}
+                                        {% if branch['branch_code'] == userdata["branch_code"] %}
+                                          <option value="{{ branch['branch_code'] }}">{{ branch['branch_name'] }}</option>
+                                        {% endif %}
+                                      {% endfor %}
+                                    {% endif %}
+                                    </select>
+                                  </div>
+                        </div>
+    
+                </div>
+                <div class="my-footer">
+                <a id="btnAddAdmin" href>{{ lang.admin_add_btn }}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                <div class="loader_modal" style=""></div>
+                <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <!-- Add Admin modal End -->
+
+
+
+<!-- Add Admin modal Start -->
+        <div align="center" class="modal fade" id="modifyadmin" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">{{ lang.admin_modify_modal_title }}</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                        <div class="" align="right" style="padding: 2%; padding-right: 25%">
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtFirstnameAdmin" class="" style="color:black; font-size:11px">{{ lang.firstname_label }}: </label>
+                                  <input type="text" id="txtFirstnameAdminMod" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtLastnameAdmin" class="" style="color:black; font-size:11px">{{ lang.lastname_label }}: </label>
+                                  <input type="text" id="txtLastnameAdminMod" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtUsernameAdmin" class="" style="color:black; font-size:11px">{{ lang.username_label }}: </label>
+                                  <input type="text" id="txtUsernameAdminMod" class="form-control" placeholder="" style="width:200px; border-radius:25px" disabled>
+                                </div>
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtPhoneAdmin" class="" style="color:black; font-size:11px">{{ lang.msisdn_label }}: </label>
+                                  <input type="text" id="txtPhoneAdminMod" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                                <div class="md-form" style="margin-bottom: 10px;">
+                                  <label for="txtEmailAdmin" class="" style="color:black; font-size:11px">{{ lang.email_label }}: </label>
+                                  <input type="text" id="txtEmailAdminMod" class="form-control" placeholder="" style="width:200px; border-radius:25px">
+                                </div>
+                              
+                                <div class="form-group" align="right">
+                                  <label for="txtUserType" class="" style="color:black; font-size:11px">Group: </label>
+                                  <select class="form-control drp-select" id="txtGroupAdminMod" style="width:200px; border-radius:25px">
+                                    {% for group in data['admin_group'] %}
+                                      <option value="{{ group['id'] }}">{{ group['name'] }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="form-group" align="right">
+                                <label for="txtInstitutionAdmin" class="" style="color:black; font-size:11px">Branch: </label>
+                                  <select class="form-control drp-select" id="txtBranchAdminMod" style="width:200px; border-radius:25px">
+                                    {% if userdata["branch_code"] == 'All' %}
+                                      {% for branch in data['branches'] %}
+                                        <option value="{{ branch['branch_code'] }}">{{ branch['branch_name'] }}</option>
+                                      {% endfor %}
+                                    {% else %}
+                                      {% for branch in data['branches'] %}
+                                        {% if branch['branch_code'] == userdata["branch_code"] %}
+                                          <option value="{{ branch['branch_code'] }}">{{ branch['branch_name'] }}</option>
+                                        {% endif %}
+                                      {% endfor %}
+                                    {% endif %}
+                                  </select>
+                                </div>
+                        </div>
+    
+                </div>
+                <div class="my-footer">
+                <a style="padding-right: 10px" id="btnDeactivateAdmin" href> {{ lang.btn_deactivate_label }} <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"> </span></a>
+                <a style="padding-right: 10px" id="btnActivateAdmin" href> {{ lang.btn_activate_label }} <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"> </span></a>
+                <a style="padding-right: 10px" id="btnUpdateAdmin" href> {{ lang.admin_modify_btn }} <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"> </span></a>
+                <div class="loader_modal" style=""></div>
+                <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <!-- Add Admin modal End -->
+
+
+      <!-- filter modal Start -->
+        <div align="center" class="modal fade" id="adminsFilter" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">{{ lang.filter_lable }}</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                <div class="" align="right" style="padding: 2%; padding-right: 25%">
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="date" class="" style="color:black; font-size:11px">{{ lang.start_date }}: </label>
+                          <input type="date" id="afromdate" class="form-control" placeholder="dd/mm/yyyy" style="width:200px; border-radius:25px">
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="Email" class="" style="color:black; font-size:11px">{{ lang.end_date }}: </label>
+                          <input type="date" id="atodate" class="form-control" placeholder="dd/mm/yyyy" style="width:200px; border-radius:25px">
+                        </div>
+                        <div class="form-group" align="right">
+                          <label for="category" style="color:black; font-size:11px">Group: </label>
+                          <select class="form-control drp-select" id="txtAdminGroupFilter" style="width:200px; border-radius:25px">
+                            <option value="">All</option>
+                            {% for group in data['admin_group'] %}
+                              <option value="{{ group['id'] }}">{{ group['name'] }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group" align="right">
+                          <label for="txtInstitutionAdmin" class="" style="color:black; font-size:11px">Branch: </label>
+                          <select class="form-control drp-select" id="txtBranchAdminFilter" style="width:200px; border-radius:25px">
+                            {% if userdata["branch_code"] == 'All' %}
+                              {% for branch in data['branches'] %}
+                                <option value="{{ branch['branch_code'] }}">{{ branch['branch_name'] }}</option>
+                              {% endfor %}
+                            {% else %}
+                              {% for branch in data['branches'] %}
+                                {% if branch['branch_code'] == userdata["branch_code"] %}
+                                  <option value="{{ branch['branch_code'] }}">{{ branch['branch_name'] }}</option>
+                                {% endif %}
+                              {% endfor %}
+                            {% endif %}
+                          </select>
+                        </div>
+                        <div class="form-group" align="right">
+                        <label for="category" style="color:black; font-size:11px">{{ lang.filter_status }}: </label>
+                        <select class="form-control drp-select" id="atxtStatus" style="width:200px; border-radius:25px">
+                            <option value="">{{ lang.bulk_opt_all }}</option>
+                            <option value="1">{{ lang.bulk_active }}</option>
+                            <option value="0">{{ lang.bulk_deactivate }}</option>
+                        </select>
+                        </div>
+                </div>
+                <!--/.Panel 1 end-->
+                </div>
+                <div class="my-footer">
+                  <a id="btnExportAdmins" href>{{ lang.bulk_opt_export }}<span class="glyphicon glyphicon-save-file" aria-hidden="true"> </span></a>
+                  <a id="btnFilterAdmins" href>{{ lang.bulk_opt_filter }}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                  <div class="loader_modal" style=""></div>
+                <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topup modal End -->
+
+
+    <!-- Add Admin modal Start -->
+        <div align="center" class="modal fade" id="addgroup" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">Add Group</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                        <div class="" align="right" style="padding: 2%; padding-right: 15%">
+                          <div class="md-form" style="margin-bottom: 10px;">
+                            <label for="txtGroupName" class="" style="color:black; font-size:11px">Group Name: </label>
+                            <input type="text" id="txtGroupName" class="form-control" placeholder="" style="width:320px; border-radius:25px">
+                          </div>
+                          <div class="md-form" style="margin-bottom: 10px;">
+                            <label for="txtGroupDescription" class="" style="color:black; font-size:11px">Description: </label>
+                            <input type="text" id="txtGroupDescription" class="form-control" placeholder="" style="width:320px; border-radius:25px">
+                          </div>
+                        </div>
+
+                        <div id="gpAddForm" class="row" >
+                           
+                           
+                           <div class="col-md-4">
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="adminsRchk" style="font-size: 13px; color: #888;">
+                                      <input id="adminsRchk" type="checkbox" class="styled">Administrators
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+
+                             <div class="col-md-4">
+                              <div class="" align="left" style="padding: 2%;  padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="mngGrpRchk" style="font-size: 13px; color: #888;">
+                                      <input id="mngGrpRchk" type="checkbox" class="styled">Manage Groups
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+                             <div class="col-md-4" >
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="accountsRchk" style="font-size: 13px; color: #888;">
+                                      <input id="branchRchk" type="checkbox" class="styled">Manage Branches
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="" align="left" style="padding: 2%;  padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="logsRchk" style="font-size: 13px; color: #888;">
+                                      <input id="logsRchk" type="checkbox" class="styled">Logs
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="col-md-4"  >
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="dashRchk" style="font-size: 13px; color: #888;">
+                                      <input id="serialsRchk" type="checkbox" class="styled">Serials
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4" >
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="transRchk" style="font-size: 13px; color: #888;">
+                                      <input id="serialsUploadRchk" type="checkbox" class="styled">Upload Serial
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="col-md-4" >
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="customRchk" style="font-size: 13px; color: #888;">
+                                      <input id="serialsApproveRchk" type="checkbox" class="styled">Approve Serials
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            
+
+                        </div>
+    
+                </div>
+                <div class="my-footer">
+                <a id="btnAddAdminGroup" href>Add Group<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                <div class="loader_modal" style=""></div>
+                <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <!-- Add Admin modal End -->
+
+
+        <!-- Update Admin group modal Start -->
+        <div align="center" class="modal fade" id="updategroup" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">Group Details</h4>
+                    </div>
+                    <div class="modal-body" >
+                        
+                        <div class="" align="right" style="padding: 2%; padding-right: 15%">
+                          <div class="md-form" style="margin-bottom: 10px;">
+                            <label for="txtGroupName" class="" style="color:black; font-size:11px">Group Name: </label>
+                            <input type="text" id="txtGroupNameMod" class="form-control" placeholder="" style="width:320px; border-radius:25px">
+                          </div>
+                          <div class="md-form" style="margin-bottom: 10px;">
+                            <label for="txtGroupDescription" class="" style="color:black; font-size:11px">Description: </label>
+                            <input type="text" id="txtGroupDescriptionMod" class="form-control" placeholder="" style="width:320px; border-radius:25px">
+                          </div>
+                          <div class="md-form" style="margin-bottom: 10px;display: none;">
+                            <label for="txtGroupDescription" class="" style="color:black; font-size:11px">Jack: </label>
+                            <input type="text" id="txtGroupIdMod" class="form-control" placeholder="" style="width:320px; border-radius:25px">
+                          </div>
+                        </div>
+                        
+
+                        <div class="row">
+                          
+
+
+
+                           <div class="col-md-4">
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="adminsRchkMod" style="font-size: 13px; color: #888;">
+                                      <input id="adminsRchkMod" type="checkbox" class="styled">Administrators
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+
+                             <div class="col-md-4">
+                              <div class="" align="left" style="padding: 2%;  padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="mngGrpRchkMod" style="font-size: 13px; color: #888;">
+                                      <input id="mngGrpRchkMod" type="checkbox" class="styled">Manage Groups
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+                             <div class="col-md-4" >
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="accountsRchkMod" style="font-size: 13px; color: #888;">
+                                      <input id="branchRchkMod" type="checkbox" class="styled">Manage Branches
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="" align="left" style="padding: 2%;  padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="logsRchkMod" style="font-size: 13px; color: #888;">
+                                      <input id="logsRchkMod" type="checkbox" class="styled">Logs
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="col-md-4"  >
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="dashRchkMod" style="font-size: 13px; color: #888;">
+                                      <input id="serialsRchkMod" type="checkbox" class="styled">Serials
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4" >
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="transRchkMod" style="font-size: 13px; color: #888;">
+                                      <input id="serialsUploadRchkMod" type="checkbox" class="styled">Upload Serial
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="col-md-4" >
+                              <div class="" align="left" style="padding: 2%; padding-left: 10%;">
+                                <div class="checkbox checkbox-warning">
+                                  <label for="customRchkMod" style="font-size: 13px; color: #888;">
+                                      <input id="serialsApproveRchkMod" type="checkbox" class="styled">Approve Serials
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+
+
+
+
+
+                        </div>
+    
+                </div>
+                <div class="my-footer">
+                <a id="btnUpdateAdminGroup" href>Update Group<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                <div class="loader_modal" style=""></div>
+                <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <!-- Update Admin Group modal End -->
+
+
+        <!-- Add Admin modal Start -->
+        <div align="center" class="modal fade" id="addbranch" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #026134;">Add Branch</h4>
+                    </div>
+                    <div class="modal-body" >
+                      <div class="" align="right" style="padding: 2%; padding-right: 25%">
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtFirstnameAdmin" class="" style="color:black; font-size:11px">Branch Code: </label>
+                          <input type="text" id="txtBranchCode" class="form-control" placeholder="Example HQ-001" style="width:200px; border-radius:25px">
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtLastnameAdmin" class="" style="color:black; font-size:11px">Branch Short Name: </label>
+                          <input type="text" id="txtBranchAcronym" class="form-control" maxlength="4" placeholder="Short Name" style="width:200px; border-radius:25px">
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtUsernameAdmin" class="" style="color:black; font-size:11px">Branch Name: </label>
+                          <input type="text" id="txtBranchName" class="form-control" placeholder="Example Osu Branch" style="width:200px; border-radius:25px">
+                        </div>
+                      </div>
+                    </div>
+                <div class="my-footer">
+                  <a id="btnAddBranch" href>{{ lang.branch_add_btn }}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                  <div class="loader_modal" style=""></div>
+                  <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <!-- Add Admin modal End -->
+
+{% endblock %}
+

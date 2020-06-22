@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for( 'static', filename= 'imgs/SSNIT-Logo.png') }}">
+
+    <title>SSNIT</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for( 'static', filename= 'css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for( 'static', filename= 'css/bootstrap.vertical-tabs.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for( 'static', filename= 'css/fontawesome.css') }}" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{{ url_for( 'static', filename= 'css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for( 'static', filename= 'css/cover.css') }}" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="{{ url_for( 'static', filename= 'js/ie-emulation-modes-warning.js') }}"></script>
+    <script src="{{ url_for( 'static', filename= 'js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for( 'static', filename= 'js/flatpickr.min.js') }}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
+
+
+
+    <!-- Loading styles for this template -->
+    <link href="{{ url_for( 'static', filename= 'css/loading.css') }}" rel="stylesheet">
+    <link href="{{ url_for( 'static', filename= 'css/flatpickr.min.css') }}" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <!-- <script src="{{ url_for( 'static', filename= 'js/jquery.min.js') }}"></script> -->
+    <script src="{{ url_for( 'static', filename= 'js/bootstrap.min.js') }}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{{ url_for( 'static', filename= 'js/ie10-viewport-bug-workaround.js') }}"></script>
+    <script src="{{ url_for( 'static', filename= 'js/jquery_form.js') }}"></script>
+
+    <!-- Charts -->
+    <script src="{{ url_for( 'static', filename= 'js/amcharts/amcharts.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for( 'static', filename= 'js/amcharts/pie.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for( 'static', filename= 'js/amcharts/serial.js') }}" type="text/javascript"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body class="">
+
+    <nav class="navbar " style="background-color: #FF6A13; margin-bottom: 0px; border-radius: 0px;">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img src="{{ url_for( 'static', filename= 'imgs/logo_3.png') }}" width="43px" height="43px" alt="nsano_logo"></a>
+        </div>
+        <div>
+          <!-- <select class="form-control drp-select pull-right" id="txtLanguage" style="width:70px; border-radius:15px; height: 25px; font-size: 10px; margin-top: 1.2%;">
+            <option value="en">LAN</option>
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+          </select> -->
+          {% if userdata['user_type'] == 3 or userdata['user_type'] == 2 %}
+            <p class="pull-right" style="font-size: 16px;padding-top: 1.3%; padding-right: 10px;"><a class="signnout" data-toggle="modal" href="#profilemod">{{ userdata['username'] }}</a> | <a class="signnout" href="/admins/signout"><span class="small">Sign out</span></a></p>
+          {% else %}
+            <p class="pull-right" style="font-size: 16px;padding-top: 1.3%; padding-right: 10px;"><a class="signnout" data-toggle="modal" href="#profilemod">{{ userdata['username'] }}</a> | <a class="signnout" href="/admins/signout"><span class="small">Sign out</span></a></p>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    <!-- <div class="name">
+        <p class="pull-right"><a class="signnout" data-toggle="modal" href="#topupmod"><span class="small balance">GH&#x20b5; 
+        {% if 'balance' in userdata['institution_data'] %}
+          {{ userdata['institution_data']['balance'] }}
+        {% else %}
+          0
+        {% endif %}
+        </span></a> | <a class="signnout" data-toggle="modal" href="#profilemod">{{ userdata['username'] }}</a> | <a class="signnout" href="/admins/signout"><span class="small">Sign out</span></a></p>
+    </div> -->
+    <nav class=" login_mynav2">
+      <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target="#navbar" aria-expanded="false"            aria-controls="navbar" >
+                <span class="sr-only">Toggle navigation</span>
+                <span style="background-color: black;" class="icon-bar"></span>
+                <span style="background-color: black;" class="icon-bar"></span>
+                <span style="background-color: black;" class="icon-bar"></span>
+            </button>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse nav-pad" align="center">
+          <ul class="nav navbar-nav">
+          <li><a style="{{ mStyle.home | safe  }}" href="{{ url_for('home.user_home_page') }}">{{ lang.menu_home }}</a></li>
+ 
+          {% set role = userdata['details'] %}
+            
+            {% if 'S' in role %}
+              <li><a style="{{ mStyle.mer | safe }}" href="{{ url_for('vouchers.vouchers_page') }}">{{ lang.menu_customers }}</a></li>
+              {% endif %}
+            {% if 'A' in role %}
+              <li><a style="{{ mStyle.admins | safe }}" href="{{ url_for('admins.admins_page') }}">{{ lang.menu_admins }}</a></li>
+              <li><a style="{{ mStyle.validators | safe }}" href="{{ url_for('validators.validators_page') }}">{{ lang.menu_validators }}</a></li>
+
+              {% endif %}
+            {% if  'L' in role %}
+              <li><a style="{{ mStyle.logs | safe }}" href="{{ url_for('logs.logs_page') }}">{{ lang.menu_logs }}</a></li>
+            {% endif %}
+          
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div >
+
+        {% block body %}{% endblock %}
+
+    </div>
+
+    <!-- Topup modal Start -->
+    <div align="center" class="modal fade" id="topupmod" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" style="width: 578px;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">{{ lang.topup_modal_label }}</h4>
+                    </div>
+                    <div class="modal-body" >
+                        <div>
+                            <ul class="nav nav-tabs tabs-5 mynav" role="tablist">
+
+                                
+                                <li class="nav-item active">
+                                    <a class="nav-link in" data-toggle="tab" href="#panel1" role="tab" onclick="showmil()">{{ lang.topup_manilla_label }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#panel2" role="tab" onclick="showbank()">{{ lang.topup_bank_label }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+
+                <!--My Profile start-->
+                <div class="tab-pane fade in active" id="panel1" role="tabpanel" align="right" style="padding: 2%; padding-right: 25%">
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtTopupfullNameMil" class="disable" style="color:black; font-size:11px">{{ lang.fullname_label }}: </label>
+                          <input type="text" id="txtTopupfullNameMil" class="form-control" value="{{ userdata['first_name'] }} {{ userdata['last_name'] }}"  style="width:200px; border-radius:25px" disabled>
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtTopupfullEmailMil" class="" style="color:black; font-size:11px">{{ lang.email_label }}: </label>
+                          <input type="text" id="txtTopupfullEmailMil" class="form-control" value="{{ userdata['email'] }}" style="width:200px; border-radius:25px" disabled>
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtTopupAmountMil" class="" style="color:black; font-size:11px">{{ lang.amount_label }}: </label>
+                          <input type="number" min="1" id="txtTopupAmountMil" class="form-control" style="width:200px; border-radius:25px">
+                        </div>
+                </div>
+                <!--/.Panel 1 end-->
+                <!--My Profile start-->
+                <div class="tab-pane fade " id="panel2" role="tabpanel" align="right" style="padding: 2%; padding-right: 25%">
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtTopupfullNameBK" class="" style="color:black; font-size:11px">{{ lang.fullname_label }}: </label>
+                          <input type="text" id="txtTopupfullNameBk" class="form-control" value="{{ userdata['first_name'] }} {{ userdata['last_name'] }}" style="width:200px; border-radius:25px;" disabled>
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtTopupEmailBk" class="" style="color:black; font-size:11px">{{ lang.email_label }}: </label>
+                          <input type="text" id="txtTopupEmailBk" class="form-control" value="{{ userdata['email'] }}" style="width:200px; border-radius:25px" disabled>
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtTopupTokenBk" class="" style="color:black; font-size:11px">{{ lang.payment_token_label }}: </label>
+                          <input type="text" id="txtTopupTokenBk" class="form-control" placeholder="bsh5b34h3b" style="width:200px; border-radius:25px" disabled>
+                        </div>
+                        <div class="md-form" style="margin-bottom: 10px;">
+                          <label for="txtTopupAmountBk" class="" style="color:black; font-size:11px">{{ lang.amount_label }}: </label>
+                          <input type="number" id="txtTopupAmountBk" class="form-control" style="width:200px; border-radius:25px">
+                        </div>
+                        <div class="form-group" align="right">
+                        <label for="txtTopupInstitutionBk" style="color:black; font-size:11px">{{ lang.bank_label }}: </label>
+                        <select class="form-control drp-select" id="txtTopupInstitutionBk" style="width:200px; border-radius:25px">
+                            <option value="UNIBANK">Unibank</option>
+                            <option value="ACCESS">Access Bank</option>
+                        </select>
+                        </div>
+                        <div class="form-group" align="right">
+                        <label for="txtTopupModeBk" style="color:black; font-size:11px">{{ lang.mode_label }}: </label>
+                        <select class="form-control drp-select" id="txtTopupModeBk" style="width:200px; border-radius:25px">
+                            <option value="cash">{{ lang.cash_label }}</option>
+                            <option value="cheque">{{ lang.cheque_label }}</option>
+                            <option value="transfer">{{ lang.transfer_label }}</option>
+                        </select>
+                        </div>
+                </div>
+                <!--/.Panel 1 end-->
+
+                        
+                                           
+                    </div>
+                </div>
+                <div class="my-footer">
+                <a style="padding-right: 10px" id="btnTopupManilla" href>{{ lang.btn_topup_account_label }}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                <a style="padding-right: 10px; display: none;" id="btnTopupBank" href>{{ lang.btn_topup_account_label }}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                <div class="loader_modal" style=""></div>
+                <div class="modalAlertPlaceHolder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topup modal End --> 
+
+     <!-- Profile Modal Start -->
+        <div align="center" class="modal fade" id="profilemod" role="dialog" data-backdrop="static">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="pull-left" style="color: #FF6A13;">{{ lang.profile_modal_label }}</h4>
+                    </div>
+                    <div class="modal-body">
+                          <span class="pull-left mod_details"><p style="text-align: left;"><span style="color: #ccc;">{{ lang.fullname_label }}: </span> {{ userdata['first_name'] }} {{ userdata['last_name'] }}</p></span>
+                          <div class="pull-left mod_details"><p style="text-align: left;"><span style="color: #ccc;">{{ lang.email_label }}: </span> {{ userdata['email'] }}</p></div>
+                          <div class="pull-left mod_details"><p style="text-align: left;"><span style="color: #ccc;">
+{{ lang.username_label }}: </span> {{ userdata['username'] }}</p></div>
+                          <div class="pull-left mod_details"><p style="text-align: left;"><span style="color: #ccc;">{{ lang.msisdn_label }}: </span> {{ userdata['msisdn'] }}</p></div>
+                          <div style="margin-top: 150px;" align="right">
+                              <div class="md-form" style="margin-bottom: 10px;">
+                            <label for="txtOldPassword" class="" style="color:black; font-size:11px">{{ lang.current_password_label }}: </label>
+                            <input type="password" id="txtOldPassword" class="form-control" style="width:200px; border-radius:25px">
+                          </div>
+                          <div class="md-form" style="margin-bottom: 10px; margin-top: 5px">
+                            <label for="password" class="" style="color:black; font-size:11px">{{ lang.new_password_label }}: </label>
+                            <input type="password" id="txtNewPassword" name="password" class="form-control" style="width:200px; border-radius:25px">
+                          </div>
+                           <div class="md-form" style="margin-bottom: 10px; margin-top: 5px">
+                            <label for="txtNewPasswordrep" class="" style="color:black; font-size:11px">{{ lang.repeat_password_label }}: </label>
+                            <input type="password" id="txtNewPasswordrep" class="form-control" style="width:200px; border-radius:25px">
+                          </div>
+                          </div>
+                        
+                    </div>
+
+                    <div class="my-footer">
+                        <a id="btnAdminChangePass" href>{{ lang.btn_change_password_label }}<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"> </span></a>
+                        <div class="loader_modal" style=""></div>
+                        <div class="modalAlertPlaceHolder"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     <!-- Profile Modal End -->
+  
+  <script src="{{ url_for( 'static', filename= 'js/app.js') }}"></script>
+  <script src="{{ url_for( 'static', filename= 'js/idletimer.js') }}"></script>
+  <script type="text/javascript">
+      $(document).ready(function() {
+        // setInterval(function() {
+        //   getInstProfile();
+        // }, 30000);
+        // getInstProfile();
+      });
+    </script>
+  {% block scriptbody %}{% endblock %}
+  </body>
+</html>

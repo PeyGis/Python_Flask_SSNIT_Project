@@ -1,0 +1,389 @@
+/*
+ * Globals
+ */
+
+
+@font-face {
+  font-family: "FontAwesome";
+  src: local(FontAwesome), url("../fonts/FontAwesome-webfont.eot");
+}
+
+
+@font-face {
+  font-family: "GothamRounded-Light";
+  src:local(GothamRounded-Light), url("../fonts/Gotham/GothamRounded-Light.eot");
+  src: url("../fonts/Gotham/GothamRounded-Light.eot?#iefix") format("embedded-opentype"), url("../fonts/Gotham/GothamRounded-Light.ttf") format("truetype"), url(".../fonts/Gotham/GothamRounded-Light.woff") format("woff"); 
+
+}
+
+@font-face {
+  font-family: "GothamRounded-Medium";
+  src:local(GothamRounded-Medium), url("../fonts/Gotham/GothamRounded-Medium.otf");
+  src: url("../fonts/Gotham/GothamRounded-Medium.otf?#iefix") format("opentypefont"), url("../fonts/Gotham/GothamRounded-Medium.ttf") format("truetype");
+}
+
+
+/* Links */
+
+a {
+  color: #888;
+  text-decoration: none;
+  font-family:"GothamRounded-Medium";
+}
+
+a:focus,
+a:hover {
+  color: #FF6A13;
+  text-decoration: none;
+}
+
+.signnout {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family:"GothamRounded-Medium";
+}
+
+.signnout:focus,
+.signnout:hover {
+  color: #955302;
+  text-decoration: none;
+}
+
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+
+/*
+ * Base structure
+ */
+ .home-bkg {
+    background: url(../imgs/bkg.jpg)no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover; 
+ }
+
+ .bulk-bkg {
+    background: url(../imgs/bg.jpg);
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover; 
+ }
+
+html,
+body {
+  height: 100%;
+  background-color: #fff;
+}
+body {
+  color: #eee;
+  text-align: center;
+  font-family: "GothamRounded-Light";
+  font-size: 10px;
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+
+
+/*
+ * Header
+ */
+.masthead-brand {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.masthead-nav > li {
+  display: inline-block;
+}
+.masthead-nav > li + li {
+  margin-left: 20px;
+}
+.masthead-nav > li > a {
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff; /* IE8 proofing */
+  color: rgba(255,255,255,.75);
+  border-bottom: 2px solid transparent;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+  background-color: transparent;
+  border-bottom-color: #a9a9a9;
+  border-bottom-color: rgba(255,255,255,.25);
+}
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+@media (min-width: 768px) {
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+  }
+}
+
+
+/*
+ * Cover
+ */
+
+.cover {
+  padding: 0 20px;
+}
+.cover .btn-lg {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+
+/*
+ * Footer
+ */
+
+.mastfoot {
+  color: #999; /* IE8 proofing */
+  color: rgba(255,255,255,.5);
+}
+
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 768px) {
+  /* Pull out the header and footer */
+  .masthead {
+    position: fixed;
+    top: 0;
+  }
+  .mastfoot {
+    position: fixed;
+    bottom: 0;
+  }
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+}
+
+@media (min-width: 992px) {
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 700px;
+  }
+}
+
+.options {
+  margin-top: 60px;
+}
+
+.options p {
+  margin-bottom: 30px;
+}
+
+.navbar2 {
+  position: relative;
+  min-height: 80px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+}
+
+.nav-pad {
+  padding-top: 2%;
+  padding-left: 38%;
+}
+
+.myimg {
+  margin-top: 320px;
+  margin-bottom: 10px;
+}
+
+.welcome p{
+  font-size: 24px;
+  line-height: 15px;
+  font-weight: bolder;
+  color: white;
+  letter-spacing: 3px;
+}
+
+.last_lg p{
+  font-size: 10px;
+  line-height: 15px;
+  font-weight: bolder;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.name {
+  height: 30px;
+  background-color: #eee;
+  padding:6px;
+  padding-right: 130px;
+  font-size: 14px;
+  color: #FF6A13;
+
+}
+
+.login_mynav {
+  background-color: #fff; 
+  border-radius: 0px; 
+  margin-bottom:100px; 
+}
+
+.login_mynav2 {
+  background-color: #fff; 
+  border-radius: 0px; 
+  border-bottom: 1px solid #888;
+}
+
+.name2 {
+  height: 30px;
+  background-color: #fff;
+  padding:6px;
+  padding-right: 10%;
+  padding-left: 10%;
+  font-size: 14px;
+  color: #FF6A13;
+
+}
+
+****************************************************************************************
+.table-responsive {
+    min-height: .01%;
+     overflow-x: inherit; 
+}
+
+th {
+    text-align: center;
+    color: #fff;
+}
+
+.table_headings {
+  background-color: #FF6A13;
+  color: white;
+}
+
+ .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 10px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ccc;
+    color: #555;
+    font-size: 11px;
+}
+
+.mod_details { 
+   border-bottom: 1px solid #FF6A13;
+   width: 100%;
+   color: #FF6A13;
+   padding-top: 8px;
+   font-weight: bolder;
+}
+
+.mod_details p{
+  letter-spacing: 1px;
+}
+
+.my-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #FF6A13;
+  font-size: 18px;
+  color: #FF6A13;
+}
+
+.trans_success {
+  color: green;
+}
+
+.trans_failed {
+  color: red;
+}
+
+.trans_Initiated {
+  color: yellow;
+}
+
+.trans_reversed {
+  color: gray;
+}
+
+.form-control {
+    display: inline; 
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #888;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.balance a {
+    color: #000;
+    text-decoration: none;
+    font-family: "GothamRounded-Medium";
+}
+
+.dp_pos {
+  float: right;
+  position: inherit;
+}
+
+@media (max-width: 610px) {
+  .pagemy {
+    margin-top:10px;
+    margin-right: 110px;
+  }
+}
